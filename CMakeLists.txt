@@ -72,9 +72,7 @@ include_directories(SYSTEM
 #	Create Executable
 #
 
-add_subdirectory(src)
-include_directories(${MyProject_SOURCE_DIR}/src)
-add_executable(picam stream.c hooks.c mpegts.c httplivestreaming.c state.c log.c text.c timestamp.c subtitle.c dispmanx.c)
+add_executable(picam src/stream.c src/hooks.c src/mpegts.c src/httplivestreaming.c src/state.c src/log.c src/text.c src/timestamp.c src/subtitle.c src/dispmanx.c)
 
 #
 # Link libraries to picam
