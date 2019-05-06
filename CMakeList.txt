@@ -1,129 +1,106 @@
 cmake_minimum_required (VERSION 3.0)
+set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} "${CMAKE_SOURCE_DIR}/cmake/Modules/")
+
+message(STATUS "${CMAKE_MODULE_PATH}")
 project (picam)
 
 #
 # Find packages
 #
 
-# Package Config
-find_package(PkgConfig REQUIRED)
-
-# Pthreads
+# Packages included by CMake
 find_package (Threads REQUIRED)
+find_package (ALSA REQUIRED) 
+find_package (OpenSSL REQUIRED) 
+find_package (ZLIB REQUIRED)
 
-# Also
-find_package(ALSA REQUIRED) 
+#Packages included by pkgconfig
+find_package (Harfbuzz REQUIRED)
+find_package (Freetype2 REQUIRED)
+find_package (Fontconfig REQUIRED)
+find_package (LibAVFormat REQUIRED)
+find_package (LibAVCodec REQUIRED)
 
-# OpenSSL Crypto Library
-find_package(OpenSSL REQUIRED) 
+find_package (FdkAAC REQUIRED)
+find_package (SWResample REQUIRED)
+find_package (LibAVUtil REQUIRED)
 
-#
-#	Find libraries using Package config
-#
+#Package included pi Rapberry pi GPU Examples
+find_package (LibILClient REQUIRED)
 
-# Harfbuzz
-pkg_check_modules(HARFBUZZ REQUIRED harfbuzz)
-include_directories(SYSTEM PUBLIC ${HARFBUZZ_INCLUDE_DIRS})
+#Package included pi Rapberry pi Userland
+find_package (BcmHost REQUIRED)
+find_package (BrcmEGL REQUIRED)
+find_package (BrcmGLES2 REQUIRED)
+find_package (OpenMaxIL REQUIRED)
+find_package (VCOS REQUIRED)
+find_package (VCHIQ_ARM REQUIRED)
 
-# LibFreetype2
-pkg_check_modules(FREETYPE2 REQUIRED freetype2)
-include_directories(SYSTEM PUBLIC ${FREETYPE2_INCLUDE_DIRS})
 
-# LibFontconfig
-pkg_check_modules(FONTCONFIG REQUIRED fontconfig)
-include_directories(SYSTEM PUBLIC ${FONTCONFIG_INCLUDE_DIRS})
-
-# LibAVFormat
-pkg_check_modules(LIBAVFORMAT REQUIRED libavformat)
-include_directories(SYSTEM PUBLIC ${LIBAVFORMAT_INCLUDE_DIRS})
-
-# LibAVCodec
-pkg_check_modules(LIBAVCODEC REQUIRED libavcodec)
-include_directories(SYSTEM PUBLIC ${LIBAVCODEC_INCLUDE_DIRS})
-
-#
-# Find packages using package config from /opt/vc
-#
-set(ENV{PKG_CONFIG_PATH}  "/opt/vc/lib/pkgconfig")
-pkg_check_modules(RPI_GPU REQUIRED bcm_host brcmegl brcmglesv2)
-include_directories(SYSTEM PUBLIC ${RPI_GPU_INCLUDE_DIRS})
-link_directories(${RPI_GPU_LIBRARY_DIRS})
+#Other
+find_package (LibM REQUIRED)
 
 #
-# LibILClient
+# Set include directories
 #
 
-find_path(LIBILCLIENT_INCLUDE_DIR ilclient.h
-	HINTS /opt/vc/src/hello_pi/libs/ilclient
-)
+include_directories(SYSTEM
+	${HARFBUZZ_INCLUDE_DIRS}
+	${FREETYPE2_INCLUDE_DIRS}
+	${FONTCONFIG_INCLUDE_DIRS}
+	${LIBAVFORMAT_INCLUDE_DIRS}
+	${LIBAVCODEC_INCLUDE_DIRS}
 
-find_library(LIBILCLIENT_LIBRARY NAMES ilclient libilclient
-	HINTS	/opt/vc/src/hello_pi/libs/ilclient
-)
+	${FDKAAC_INCLUDE_DIRS}
+	${SWRESAMPLE_INCLUDE_DIRS}
+	${LIBAVUTIL_INCLUDE_DIRS}
 
-include_directories(${LIBILCLIENT_INCLUDE_DIR})
+	${LIBILCLIENT_INCLUDE_DIRS}
 
-#
-# Load the other files from picam
-#
-ADD_LIBRARY(HelperFunctions 
-    hooks.c
-    mpegts.c
-    httplivestreaming.c
-    state.c
-    log.c
-    text.c
-    timestamp.c
-    subtitle.c
-    dispmanx.c
+	${BCMHOST_INCLUDE_DIRS}
+	${BRCMEGL_INCLUDE_DIRS}
+	${BRCMGLES_INCLUDE_DIRS}
+	${OPENMAXIL_INCLUDE_DIRS}
+	${VCOS_INCLUDE_DIRS}
+	${VCHIQ_ARM_INCLUDE_DIRS}
+
+	${LIBM_INCLUDE_DIRS}
+	${ZLIB_INCLUDE_DIRS}
 )
 
 #
 #	Create Executable
 #
 
-add_executable(picam stream.c)
-target_link_libraries(picam HelperFunctions)
+add_executable(picam stream.c hooks.c mpegts.c httplivestreaming.c state.c log.c text.c timestamp.c subtitle.c dispmanx.c)
 
 #
-# Link libraries found by find_package
+# Link libraries to picam
 #
+target_link_libraries(picam PUBLIC
+	${CMAKE_THREAD_LIBS_INIT}
+	${ALSA_LIBRARIES}
+	${OPENSSL_CRYPTO_LIBRARY}
 
-# Pthreads
-target_link_libraries (picam ${CMAKE_THREAD_LIBS_INIT})
+	${HARFBUZZ_LIBRARIES}
+	${FREETYPE2_LIBRARIES}
+	${FONTCONFIG_LIBRARIES}
+	${LIBAVFORMAT_LIBRARIES}
+	${LIBAVCODEC_LIBRARIES}
 
-# Alsa
-target_link_libraries(picam ${ALSA_LIBRARIES})   
+	${FDKAAC_LIBRARIES}
+	${SWRESAMPLE_LIBRARIES}
+	${LIBAVUTIL_LIBRARIES}
 
-# OpenSSL Crypto
-target_link_libraries(picam ${OPENSSL_CRYPTO_LIBRARY})   
+	${LIBILCLIENT_LIBRARIES}
 
-#
-# Link libraries found by PackageConfig
-#
+	${BCMHOST_LIBRARIES}
+	${BRCMEGL_LIBRARIES}
+	${BRCMGLES_LIBRARIES}
+	${OPENMAXIL_LIBRARIES}
+	${VCOS_LIBRARIES}
+	${VCHIQ_ARM_LIBRARIES}
 
-# Harfbuzz
-target_link_libraries(picam ${HARFBUZZ_LIBRARIES})
-
-# Freetype2
-target_link_libraries(picam ${FREETYPE2_LIBRARIES})
-
-# Fontconfig
-target_link_libraries(picam ${FONTCONFIG_LIBRARIES})
-
-# Libavformat
-target_link_libraries(picam ${LIBAVFORMAT_LIBRARIES})
-
-# Libavcodev
-target_link_libraries(picam ${LIBAVCODEC_LIBRARIES})
-
-#
-# Link Raspberry Pi libraries
-#
-
-# libilclient
-target_link_libraries(picam ${LIBILCLIENT_LIBRARY})
-
-# Libraries in /opt/vc
-target_link_libraries (picam ${RPI_GPU_LIBRARIES} )
-
+	${LIBM_LIBRARIES}
+	${ZLIB_LIBRARIES}
+)
