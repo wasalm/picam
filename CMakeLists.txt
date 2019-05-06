@@ -72,6 +72,8 @@ include_directories(SYSTEM
 #	Create Executable
 #
 
+add_subdirectory(src)
+include_directories(${MyProject_SOURCE_DIR}/src)
 add_executable(picam stream.c hooks.c mpegts.c httplivestreaming.c state.c log.c text.c timestamp.c subtitle.c dispmanx.c)
 
 #
