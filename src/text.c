@@ -15,7 +15,7 @@
 #include <hb-ft.h>
 
 // Fontconfig
-#include <fontconfig.h>
+#include <fontconfig/fontconfig.h>
 
 #include "text.h"
 
