@@ -104,3 +104,5 @@ target_link_libraries(picam PUBLIC
 	${LIBM_LIBRARIES}
 	${ZLIB_LIBRARIES}
 )
+
+install (TARGETS picam DESTINATION bin)
