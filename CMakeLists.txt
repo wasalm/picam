@@ -32,7 +32,7 @@ find_package (BrcmGLES2 REQUIRED)
 find_package (OpenMaxIL REQUIRED)
 find_package (VCOS REQUIRED)
 find_package (VCHIQ_ARM REQUIRED)
-find_package (VHOST REQUIRED)
+find_package (VCHOST REQUIRED)
 
 
 #Other
