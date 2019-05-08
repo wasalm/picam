@@ -32,6 +32,7 @@ find_package (BrcmGLES2 REQUIRED)
 find_package (OpenMaxIL REQUIRED)
 find_package (VCOS REQUIRED)
 find_package (VCHIQ_ARM REQUIRED)
+find_package (VHOST REQUIRED)
 
 
 #Other
@@ -58,6 +59,7 @@ include_directories(SYSTEM
 	${OPENMAXIL_INCLUDE_DIRS}
 	${VCOS_INCLUDE_DIRS}
 	${VCHIQ_ARM_INCLUDE_DIRS}
+	${VCHOST_INCLUDE_DIRS}
 
 	${LIBM_INCLUDE_DIRS}
 	${ZLIB_INCLUDE_DIRS}
@@ -94,6 +96,7 @@ target_link_libraries(picam PUBLIC
 	${OPENMAXIL_LIBRARIES}
 	${VCOS_LIBRARIES}
 	${VCHIQ_ARM_LIBRARIES}
+	${VCHOST_LIBRARIES}
 
 	${LIBM_LIBRARIES}
 	${ZLIB_LIBRARIES}
