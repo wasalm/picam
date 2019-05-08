@@ -35,7 +35,7 @@ extern "C" {
 #include <getopt.h>
 
 #include "bcm_host.h"
-#include "ilclient.h"
+#include "ilclient/ilclient.h"
 
 #include "hooks.h"
 #include "mpegts.h"

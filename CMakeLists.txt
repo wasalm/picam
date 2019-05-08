@@ -25,9 +25,6 @@ find_package (FdkAAC REQUIRED)
 find_package (SWResample REQUIRED)
 find_package (LibAVUtil REQUIRED)
 
-#Package included pi Rapberry pi GPU Examples
-find_package (LibILClient REQUIRED)
-
 #Package included pi Rapberry pi Userland
 find_package (BcmHost REQUIRED)
 find_package (BrcmEGL REQUIRED)
@@ -54,8 +51,6 @@ include_directories(SYSTEM
 	${FDKAAC_INCLUDE_DIRS}
 	${SWRESAMPLE_INCLUDE_DIRS}
 	${LIBAVUTIL_INCLUDE_DIRS}
-
-	${LIBILCLIENT_INCLUDE_DIRS}
 
 	${BCMHOST_INCLUDE_DIRS}
 	${BRCMEGL_INCLUDE_DIRS}
@@ -91,8 +86,6 @@ target_link_libraries(picam PUBLIC
 	${FDKAAC_LIBRARIES}
 	${SWRESAMPLE_LIBRARIES}
 	${LIBAVUTIL_LIBRARIES}
-
-	${LIBILCLIENT_LIBRARIES}
 
 	${BCMHOST_LIBRARIES}
 	${BRCMEGL_LIBRARIES}
