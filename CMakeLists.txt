@@ -67,7 +67,8 @@ include_directories(SYSTEM
 #	Create Executable
 #
 
-add_executable(picam src/stream.c src/hooks.c src/mpegts.c src/httplivestreaming.c src/state.c src/log.c src/text.c src/timestamp.c src/subtitle.c src/dispmanx.c src/ilclient/ilclient.c src/ilclient/ilcore.c)
+add_definitions( -DOMX_SKIP64BIT )
+add_executable(picam src/stream.c src/hooks.c src/mpegts.c src/httplivestreaming.c src/state.c src/log.c src/text.c src/timestamp.c src/subtitle.c src/dispmanx.c src/ilclient/ilclient.c)
 
 #
 # Link libraries to picam
